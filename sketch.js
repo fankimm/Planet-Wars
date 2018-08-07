@@ -61,7 +61,7 @@ function setup() {
   currentTime = millis()
   deltaTime = 0
   fill(255)
-  textSize(64)
+  textSize(64 * dd)
 
 
 }
