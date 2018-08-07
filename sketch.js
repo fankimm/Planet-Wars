@@ -1,259 +1,222 @@
-// version 0.1.1
-
-var earthImg
-var poisonImg
-var sunImg
-var bgImg
-var buttonImg
-var gameoverImg
 
 
-var bgmSound
-var eatSound
-var gameoverSound
-
-var earth
+var player
+var enemy
 var sun
-var poison
-var button
-var gameover
-
-var gameOverIs
-var gameStartIs
-
-var gameOverSoundIsPlaying
+var item
 
 var score
 
+var isItemGen
+var isItemGet
+var isItemUse
+var isGameOver
+var isGrown
+
+var spriteSheets
+var spriteIndex
+
+var currentTime
+var lastTime
+var deltaTime
+
+
+var lastFrameCount
+
 var font
 
-
-
-
 function preload(){
-  font = loadFont('assets/love.ttf')
-  earthImg = loadImage('assets/earth.png')
-  sunImg = loadImage('assets/sun.png')
-  poisonImg = loadImage('assets/poison.png')
-  bgImg = loadImage('assets/bg.png')
-  buttonImg = loadImage('assets/button.png')
-  gameoverImg = loadImage('assets/gameover.png')
-
-  bgmSound = loadSound('assets/bgm.mp3')
-  eatSound = loadSound('assets/eatSound.mp3')
-  gameoverSound = loadSound('assets/gameoverBgm.mp3')
-
+  font = loadFont("assets/love.ttf")
+  spriteSheets = loadImage("assets/spriteSheets.png")
 }
-
 function setup() {
+  pixelDensity(1)
+  var dw = displayWidth - 100
+  var dh = displayHeight - 100
+  if(dw > dh){
+    createCanvas(dh / 1.7, dh)
+  } else createCanvas(displayWidth, displayHeight)
 
-  // frameRate(30)
+  imageMode(CENTER)
   textFont(font)
 
-  createCanvas(windowWidth,windowHeight)
-  GameInit()
-  button = new imgDsp(width/2,height/2,buttonImg,2)
-  gameover = new imgDsp(width/2,button.pos.y-100,gameoverImg,2)
-  noStroke()
-  gameStartIs = false
-  gameOverSoundIsPlaying = false
-  bgmSound.setLoop(true)
-  gameoverSound.setLoop(true)
+  score = 0
+  lastFrameCount = 0
 
-  eatSound.playMode('restart')
-  bgmSound.playMode('restart')
-  gameoverSound.playMode('restart')
-  // bgmSound.setVolume(0.5)
-  // bgmSound.play()
+  player = new Planet(width - 100, height - 100, 0, 0, 2, 0, false, 4)
+  enemy = new Planet(100, 100, 1, 1, 1, 1, false)
+  sun = new Planet(random(100, width - 100), random(100, height - 100), 0, 0, 0, 2, false)
+  item = new Planet(-100, -100, 0, 0, 0, 3, false)
+
+  isItemGen = false
+  isItemGet = false
+  isItemUse = false
+  isGameOver = false
+  isGrown = false
+
+  spriteIndex = 0
+  // player.spriteAnimation(10)
+
+  lsatTime = 0
+  currentTime = millis()
+  deltaTime = 0
+  fill(255)
+  textSize(64)
+
+
 }
 
 function draw() {
-
-  if(!gameStartIs){
-    textAlign(CENTER)
-    clear()
-    image(bgImg,0,0,width,height)
-    textSize(50)
-    stroke(0)
-    strokeWeight(10)
-    fill(255,194,30)
-
-    text('TOUCH TO MOVE',width/2,height/2-50)
-    text('AVOID PURPLE PLANET' ,width/2,height/2)
-    text('AND GET YELLOW PLANET!',width/2,height/2+50)
-  }
-  if(!gameOverIs && gameStartIs){
+  lastTime = currentTime
+  currentTime = millis()
+  var dt = (currentTime - lastTime)/ 10
+  // console.log(dt)
 
 
+  if(!isGameOver){
+    background(30)
 
-    clear()
-    image(bgImg,0,0,width,height)
-    edgeCheck(earth)
-    if(CollisionCheck(earth,poison)){
-      gameOverIs = true
-      // console.log('game over')
-    } else if (CollisionCheck(earth,sun)){
-      sun.eaten = true
-      eatSound.play()
-    }
+    // player.pos.add(player.vel)
+    if(isItemUse) {
+      player.spriteAnimation(10)
 
-    earth.update()
-    earth.draw()
-    poison.update()
+      stroke(0)
+      strokeWeight(5)
+      fill(255)
 
-    poison.chase()
-    poison.draw()
+      rect(player.pos.x - player.rad, player.pos.y + 30, (lastFrameCount - frameCount + 240) / 24 * 6.4, 12)
 
-    sun.gen()
+    } else if(!isItemUse) player.draw()
+
+    player.update(dt)
+    enemy.update(dt)
+    enemy.draw()
     sun.draw()
+    item.draw()
 
-  //fps
-  var fps = frameRate();
-  fill(255);
-  stroke(0);
-  // console.log(frameCount)
-  textSize(20)
-  noStroke()
-  text("FPS: " + fps.toFixed(2), 50, 50);
-  textSize(30)
-  stroke(0)
-  strokeWeight(10)
-
-  text(score,50,100)
-} else if(gameOverIs){
-    gameover.draw()
-    button.draw()
-    textSize(100)
-    textAlign(CENTER)
-    stroke(0)
-    strokeWeight(10)
-    fill(255,194,30)
-    text(score,width/2,button.pos.y+buttonImg.height*4)
-
-    bgmSound.setVolume(0)
-    gameoverSound.setVolume(1)
-    if(!gameOverSoundIsPlaying)
-    gameoverSound.play(0)
-    gameOverSoundIsPlaying = true
-    // rect(button.pos.x,button.pos.y,buttonImg.width*button.scl,buttonImg.height*button.scl)
-
-
-
+    edgeCheck(player)
+    enemyMove(enemy, player)
+    getSun()
+    itemGen()
+    getItem()
+    gameOver()
+    itemEnd()
+    enemyGrow()
+    itemDraw()
   }
 
+  text(score, 10, 50)
 
 }
+
+function gameOver(){
+  if(!isGameOver){
+    if(isItemUse) return 0
+    if(collisionCheck(player, enemy)) {
+      isGameOver = true
+    }
+  }
+}
+
+function itemEnd(){
+  if(lastFrameCount + 240 < frameCount && isItemUse){
+    isItemUse = false
+    isItemGen = false
+    player.isAnim = false
+
+  }
+}
+
+function enemyGrow(){
+  if(score % 4 == 2) isGrown = false
+  if(!isGrown && score % 4 == 3){
+    isGrown = true
+    enemy.rad += 10
+  }
+}
+
+function itemUse(){
+  if(isItemGet){
+    player.isAnim = true
+    isItemUse = true
+    lastFrameCount = frameCount
+    isItemGet = false
+    player.color = color(255)
+  }
+}
+
+function itemGen(){
+  if(!isItemGen && frameCount % 180 == 0){
+    isItemGen = true
+    item.pos.x = random(100, width - 100)
+    item.pos.y = random(100, height - 100)
+  }
+}
+
+function getItem(){
+  if(isItemGen && collisionCheck(item, player)){
+    isItemGet = true
+    score++
+    item.pos.x = -100
+    item.pos.y = -100
+  }
+}
+
+function itemDraw(){
+  if(isItemGet){
+    // tint(255,255,255,80)
+    image(spriteSheets, width - player.rad , height - player.rad , player.rad, player.rad, 3 * 60, 0, 60, 60)
+    // tint(255)
+  }
+}
+
+function getSun(){
+  if(collisionCheck(sun, player)){
+    sun.pos.x = random(100, width - 100)
+    sun.pos.y = random(100, height - 100)
+    score++
+    player.speed += 0.7
+  }
+}
+
+function collisionCheck(a, b){
+  if(dist(a.pos.x, a.pos.y, b.pos.x, b.pos.y) < a.rad + b.rad) return true
+}
+
+function enemyMove(a, b){
+  a.vel.x = (b.pos.x - a.pos.x) / dist(a.pos.x, a.pos.y, b.pos.x, b.pos.y)
+  a.vel.y = (b.pos.y - a.pos.y) / dist(a.pos.x, a.pos.y, b.pos.x, b.pos.y)
+}
+
+function playerMove(planet){
+  planet.vel.x = (mouseX - planet.pos.x) / dist(planet.pos.x, planet.pos.y, mouseX, mouseY)
+  planet.vel.y = (mouseY - planet.pos.y) / dist(planet.pos.x, planet.pos.y, mouseX, mouseY)
+}
+
 function edgeCheck(planet){
-  if(planet.pos.x<0){
-    planet.pos.x = width-planet.pos.x
-  } else if (planet.pos.x>width){
-    planet.pos.x = planet.pos.x - width
-  } else if (planet.pos.y<0){
-    planet.pos.y = height-planet.pos.y
-  } else if(planet.pos.y>height) {
-    planet.pos.y = planet.pos.y - height
+  if(planet.pos.x - planet.rad < 0){
+    planet.pos.x = planet.rad
+    planet.vel.x *= -1
+  } else if(planet.pos.x + planet.rad > width){
+    planet.pos.x = width - planet.rad
+    planet.vel.x *= -1
+  } else if(planet.pos.y - planet.rad < 0){
+    planet.pos.y = planet.rad
+    planet.vel.y *= -1
+  } else if(planet.pos.y + planet.rad > height){
+    planet.pos.y = height - planet.rad
+    planet.vel.y *= -1
   }
 }
-function CollisionCheck (planet1, planet2){
-  // var d = p5.Vector.dist(planet1.pos.add(planet1.r,planet1.r), planet2.pos.add(planet2.r,planet2.r));
-  var d = dist(planet1.pos.x+planet1.r,planet1.pos.y+planet1.r,planet2.pos.x+planet2.r,planet2.pos.y+planet2.r)
-  if(d<=planet1.r+planet2.r){
-    return true
-  } else {
-    return false
-  }
-}
-
-
-
-function Planet(x,y,r,power,imgName){
-  this.r = r
-  this.imgName = imgName
-  this.pos = createVector (x,y)
-  this.vel = createVector (0,0)
-  this.power = power
-  this.eaten = false
-
-  this.update = function(){
-    this.pos.x += this.vel.x*this.power
-    this.pos.y += this.vel.y*this.power
-
-  }
-
-  this.draw = function(){
-    image(this.imgName,this.pos.x,this.pos.y,this.r*2,this.r*2)
-  }
-
-  this.chase = function(){
-    this.vel.x = (earth.pos.x-this.pos.x)/dist(this.pos.x,this.pos.y,earth.pos.x,earth.pos.y)
-    this.vel.y = (earth.pos.y-this.pos.y)/dist(this.pos.x,this.pos.y,earth.pos.x,earth.pos.y)
-  }
-
-
-
-  this.gen = function(){
-    if(this.eaten){
-
-      this.pos = createVector(random(this.r*2,width-this.r*2),random(this.r*2,height-this.r*2))
-      this.eaten = false
-      earth.power += 1.5
-      earth.r += 5
-      score++
-      if(int(score%4)==3){
-        poison.power += 1
-        poison.r += 3
-      }
-    }
-  }
-}
-
-function imgDsp(x,y,imgName,scl){
-  this.scl = scl
-  this.pos = createVector(x-imgName.width*this.scl/2,y-imgName.height*this.scl/2)
-  this.imgName = imgName
-  this.draw = function(){
-    image(this.imgName,this.pos.x,this.pos.y,imgName.width*this.scl,imgName.height*this.scl)
-  }
-}
-
-
-function GameInit(){
-  bgmSound.setVolume(1)
-  bgmSound.play()
-
-  gameoverSound.setVolume(0)
-  gameOverSoundIsPlaying = false
-  gameOverIs = false
-  gameStartIs = false
-  earth = new Planet(width/2-32, height/2-32,64,3,earthImg)
-  poison = new Planet(100,100,64,1,poisonImg)
-  sun = new Planet(random(width),random(height),64,0,sunImg)
-  // item1 = new Planet(random(width),random(height),32,0,item1Img)
-
-  score = 0
-}
-
-
-function mousePressed(){
-  // console.log('click')
-  gameStartIs = true
-  earth.vel.x = (mouseX-earth.pos.x)/dist(mouseX,mouseY,earth.pos.x,earth.pos.y)
-  earth.vel.y = (mouseY-earth.pos.y)/dist(mouseX,mouseY,earth.pos.x,earth.pos.y)
-  if(gameOverIs){
-
-
-    if(mouseX>button.pos.x && mouseX<button.pos.x+buttonImg.width*button.scl){
-      if(mouseY>button.pos.y && mouseY<button.pos.y+buttonImg.height*button.scl){
-
-        GameInit()
-        // return 0
-      }
-    }
-  }
-
-}
-
 function keyPressed(){
-  if(keyCode===UP_ARROW)
-  noLoop()
+  // console.log(keyCode)
+  if(keyCode == 49) itemUse()
+}
+
+function mouseDragged(){
+  // itemUse()
+}
+
+function mouseClicked(){
+  playerMove(player)
 }
