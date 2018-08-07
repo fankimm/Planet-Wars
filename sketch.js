@@ -134,6 +134,7 @@ function enemyGrow(){
   if(score % 4 == 2) isGrown = false
   if(!isGrown && score % 4 == 3){
     isGrown = true
+    enemy.speed + = 0.4
     enemy.rad += 10
   }
 }
