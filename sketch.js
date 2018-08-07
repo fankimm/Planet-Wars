@@ -30,12 +30,13 @@ function preload(){
   spriteSheets = loadImage("assets/spriteSheets.png")
 }
 function setup() {
+  var dd = displayDensity()
   pixelDensity(1)
   var dw = displayWidth - 100
   var dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
-  } else createCanvas(displayWidth-100, displayHeight-100)
+  } else createCanvas(displayWidth * dd-100, displayHeight * dd-100)
 
   imageMode(CENTER)
   textFont(font)
