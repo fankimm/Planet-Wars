@@ -105,7 +105,7 @@ function draw() {
     itemDraw()
   }
 
-  text(score, 10, 50)
+  text(score, 10, 50 * dd)
 
 }
 
