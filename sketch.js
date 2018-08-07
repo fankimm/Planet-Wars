@@ -18,6 +18,7 @@ var currentTime
 var lastTime
 var deltaTime
 
+var dd
 
 var lastFrameCount
 
@@ -28,7 +29,7 @@ function preload(){
   spriteSheets = loadImage("assets/spriteSheets.png")
 }
 function setup() {
-  var dd = displayDensity()
+  dd = displayDensity()
   pixelDensity(1)
   var dw = displayWidth - 100
   var dh = displayHeight - 100
