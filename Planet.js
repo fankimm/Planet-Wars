@@ -16,7 +16,7 @@ function Planet(x, y, vx, vy, sp, fn, isAnim, endNum){
     if(this.pos.x > -this.rad && this.pos.x < width - this.rad && this.pos.y > -this.rad && this.pos.y < height - this.rad){
       if(!this.isAnim)
       image(this.planetImage, this.pos.x, this.pos.y, this.rad * 2, this.rad * 2,
-        this.frameIndex * this.pixelSize, 0, this.pixelSize, this.pixelSize )
+        fn * this.pixelSize, 0, this.pixelSize, this.pixelSize )
     }
   }
 
