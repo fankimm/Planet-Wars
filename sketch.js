@@ -84,7 +84,7 @@ function draw() {
       strokeWeight(5)
       fill(255)
 
-      rect(player.pos.x - player.rad, player.pos.y + 30, (lastFrameCount - frameCount + 240) / 24 * 6.4 * dd / 2 , 12 * dd / 2)
+      rect(player.pos.x - player.rad, player.pos.y + 30, (lastFrameCount - frameCount + 240) / 24 * 6.4 * player.rad , player.rad / 2)
 
     } else if(!isItemUse) player.draw()
 
