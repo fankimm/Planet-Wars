@@ -34,7 +34,7 @@ function setup() {
   var dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
-  } else createCanvas(displayWidth * dd-100*dd, displayHeight * dd-100*dd)
+  } else createCanvas(displayWidth * dd-100*dd, displayHeight * dd-1000)
 
   imageMode(CENTER)
   textFont(font)
