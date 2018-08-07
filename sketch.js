@@ -1,5 +1,3 @@
-
-
 var player
 var enemy
 var sun
@@ -214,12 +212,20 @@ function keyPressed(){
   if(keyCode == 49) itemUse()
 }
 
-function mouseDragged(){
-if(dw < dh){
+// function mouseDragged(){
+// if(dw < dh){
+//   itemUse()
+//   }
+// }
+function touchMoved(){
   itemUse()
 }
+function touchStarted(){
+  playerMove(player)
 }
 
 function mouseClicked(){
-  playerMove(player)
+  if(dw > dh){
+    playerMove(player)
+  }
 }
