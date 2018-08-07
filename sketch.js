@@ -35,7 +35,7 @@ function setup() {
   var dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
-  } else createCanvas(displayWidth, displayHeight)
+  } else createCanvas(displayWidth-100, displayHeight-100)
 
   imageMode(CENTER)
   textFont(font)
@@ -214,7 +214,9 @@ function keyPressed(){
 }
 
 function mouseDragged(){
-  // itemUse()
+if(dw < dh){
+  itemUse()
+}
 }
 
 function mouseClicked(){
