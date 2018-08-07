@@ -19,6 +19,8 @@ var lastTime
 var deltaTime
 
 var dd
+var dw
+var dh
 
 var lastFrameCount
 
@@ -31,12 +33,12 @@ function preload(){
 function setup() {
   dd = displayDensity()
   pixelDensity(1)
-  var dw = displayWidth - 100
-  var dh = displayHeight - 100
+  dw = displayWidth - 100
+  dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
-    console.log(window.innerWidth, " , " , window.innerHeight)
-  } else createCanvas(window.innerWidth, window.innerHeight)
+
+  } else createCanvas(windowWidth, windowHeight)
 
   imageMode(CENTER)
   textFont(font)
@@ -223,7 +225,9 @@ function touchMoved(){
   itemUse()
 }
 function touchStarted(){
+  if(dw < dh){
   playerMove(player)
+  }
 }
 
 function mouseClicked(){
