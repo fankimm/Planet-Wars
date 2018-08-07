@@ -134,7 +134,7 @@ function enemyGrow(){
   if(score % 4 == 2) isGrown = false
   if(!isGrown && score % 4 == 3){
     isGrown = true
-    enemy.speed += 10
+    enemy.speed += 0.4
     enemy.rad += 10
   }
 }
@@ -179,7 +179,7 @@ function getSun(){
     sun.pos.x = random(100, width - 100)
     sun.pos.y = random(100, height - 100)
     score++
-    player.speed += 0.7
+    player.speed += 0.4
   }
 }
 
@@ -223,7 +223,7 @@ function keyPressed(){
 //   }
 // }
 function touchMoved(){
-  itemUse()
+  if(dw < dh) itemUse()
 }
 function touchStarted(){
   if(dw < dh){
