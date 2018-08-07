@@ -35,6 +35,7 @@ function setup() {
   var dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
+    console.log(window.innerWidth, " , " , window.innerHeight)
   } else createCanvas(window.innerWidth, window.innerHeight)
 
   imageMode(CENTER)
