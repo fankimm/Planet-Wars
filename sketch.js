@@ -10,6 +10,7 @@ var isItemGet
 var isItemUse
 var isGameOver
 var isGrown
+var isPost
 
 var spriteSheets
 var spriteIndex
@@ -18,9 +19,6 @@ var currentTime
 var lastTime
 var deltaTime
 
-var dd
-var dw
-var dh
 
 var lastFrameCount
 
@@ -31,14 +29,13 @@ function preload(){
   spriteSheets = loadImage("assets/spriteSheets.png")
 }
 function setup() {
-  dd = displayDensity()
+  var dd = displayDensity()
   pixelDensity(1)
-  dw = displayWidth - 100
-  dh = displayHeight - 100
+  var dw = displayWidth - 100
+  var dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
-
-  } else createCanvas(windowWidth, windowHeight)
+  } else createCanvas(displayWidth * dd-100*dd, displayHeight * dd-100*dd)
 
   imageMode(CENTER)
   textFont(font)
@@ -56,6 +53,7 @@ function setup() {
   isItemUse = false
   isGameOver = false
   isGrown = false
+  isPost = false
 
   spriteIndex = 0
   // player.spriteAnimation(10)
@@ -64,7 +62,7 @@ function setup() {
   currentTime = millis()
   deltaTime = 0
   fill(255)
-  textSize(64 * dd)
+  textSize(64)
 
 
 }
@@ -87,7 +85,7 @@ function draw() {
       strokeWeight(5)
       fill(255)
 
-      rect(player.pos.x - player.rad, player.pos.y + player.rad, (lastFrameCount - frameCount + 240) / 240 * player.rad * 2 , player.rad / 2)
+      rect(player.pos.x - player.rad, player.pos.y + 30, (lastFrameCount - frameCount + 240) / 24 * 6.4, 12)
 
     } else if(!isItemUse) player.draw()
 
@@ -107,8 +105,13 @@ function draw() {
     enemyGrow()
     itemDraw()
   }
+  if(isGameOver & !isPost){
+    isPost = true
+    var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=fankimm' + '&score=' + score;
+    httpDo(url)
+  }
 
-  text(score, 10, 50 * dd)
+  text(score, 10, 50)
 
 }
 
@@ -134,7 +137,6 @@ function enemyGrow(){
   if(score % 4 == 2) isGrown = false
   if(!isGrown && score % 4 == 3){
     isGrown = true
-    enemy.speed += 0.4
     enemy.rad += 10
   }
 }
@@ -179,7 +181,7 @@ function getSun(){
     sun.pos.x = random(100, width - 100)
     sun.pos.y = random(100, height - 100)
     score++
-    player.speed += 0.4
+    player.speed += 0.7
   }
 }
 
@@ -223,12 +225,10 @@ function keyPressed(){
 //   }
 // }
 function touchMoved(){
-  if(dw < dh) itemUse()
+  itemUse()
 }
 function touchStarted(){
-  if(dw < dh){
   playerMove(player)
-  }
 }
 
 function mouseClicked(){
