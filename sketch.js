@@ -3,7 +3,11 @@ var enemy
 var sun
 var item
 
+var name
 var score
+
+var dw
+var dh
 
 var isItemGen
 var isItemGet
@@ -11,6 +15,8 @@ var isItemUse
 var isGameOver
 var isGrown
 var isPost
+var isInput
+var isEnter
 
 var spriteSheets
 var spriteIndex
@@ -18,7 +24,7 @@ var spriteIndex
 var currentTime
 var lastTime
 var deltaTime
-
+var inp
 
 var lastFrameCount
 
@@ -29,10 +35,11 @@ function preload(){
   spriteSheets = loadImage("assets/spriteSheets.png")
 }
 function setup() {
+  inp = createInput('')
   var dd = displayDensity()
   pixelDensity(1)
-  var dw = displayWidth - 100
-  var dh = displayHeight - 100
+  dw = displayWidth - 100
+  dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
   } else createCanvas(displayWidth * dd-100*dd, displayHeight * dd-100*dd)
@@ -41,6 +48,7 @@ function setup() {
   textFont(font)
 
   score = 0
+  name = ''
   lastFrameCount = 0
 
   player = new Planet(width - 100, height - 100, 0, 0, 2, 0, false, 4)
@@ -54,6 +62,8 @@ function setup() {
   isGameOver = false
   isGrown = false
   isPost = false
+  isInput = false
+  isEnter = false
 
   spriteIndex = 0
   // player.spriteAnimation(10)
@@ -106,12 +116,24 @@ function draw() {
     itemDraw()
   }
   if(isGameOver & !isPost){
-    isPost = true
-    var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=fankimm' + '&score=' + score;
-    httpDo(url)
+
+    inp.input(myInputEvent)
+
+
+    if(isInput){
+      isPost = true
+      var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=' + name + '&score=' + score;
+      httpDo(url)
+    }
   }
 
   text(score, 10, 50)
+
+}
+
+function myInputEvent(){
+   console.log('you are typing: ', this.value());
+    name = this.value()
 
 }
 
@@ -216,6 +238,10 @@ function edgeCheck(planet){
 }
 function keyPressed(){
   // console.log(keyCode)
+  if(isGameOver && !isPost){
+    if(keyCode == 13) isInput = true
+  }
+
   if(keyCode == 49) itemUse()
 }
 
