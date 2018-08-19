@@ -289,12 +289,6 @@ function keyPressed(){
 }
 
 
-function touchMoved(){
-  itemUse()
-}
-function touchStarted(){
-  playerMove(player)
-}
 
 function mouseClicked(){
   isIntroPlayed = true
