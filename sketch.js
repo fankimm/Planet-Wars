@@ -292,6 +292,7 @@ function touchMoved(){
 }
 function touchStarted(){
   playerMove(player)
+    isIntroPlayed = true
 }
 
 function mouseClicked(){
