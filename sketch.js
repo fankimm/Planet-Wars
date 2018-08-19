@@ -52,7 +52,7 @@ function setup() {
   dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
-  } else createCanvas(windowWidth windowHeight)
+  } else createCanvas(windowWidth, windowHeight)
 
   imageMode(CENTER)
   textFont(font)
