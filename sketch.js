@@ -141,6 +141,7 @@ function draw() {
 
   text(score, 10, 50)
   if(isGameOver) UIInput.draw()
+  var inp = createInput("")
 
 }
 
@@ -264,11 +265,7 @@ function keyPressed(){
   if(keyCode == 49) itemUse()
 }
 
-// function mouseDragged(){
-// if(dw < dh){
-//   itemUse()
-//   }
-// }
+
 function touchMoved(){
   itemUse()
 }
