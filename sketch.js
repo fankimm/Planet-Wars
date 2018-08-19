@@ -141,7 +141,7 @@ function draw() {
 
   text(score, 10, 50)
   if(isGameOver) UIInput.draw()
-  var inp = createInput("")
+
 
 }
 
