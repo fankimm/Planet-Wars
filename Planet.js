@@ -1,9 +1,8 @@
 function Planet(x, y, vx, vy, sp, fn, isAnim, endNum){
-  this.dd = displayDensity()
   this.pos = createVector(x, y)
   this.vel = createVector(vx, vy)
   this.speed = sp
-  this.rad = 30 * this.dd /2
+  this.rad = 30
   this.pixelSize = 60
   this.frameIndex = fn
   this.planetImage = loadImage("assets/spriteSheets.png")
@@ -16,7 +15,7 @@ function Planet(x, y, vx, vy, sp, fn, isAnim, endNum){
     if(this.pos.x > -this.rad && this.pos.x < width - this.rad && this.pos.y > -this.rad && this.pos.y < height - this.rad){
       if(!this.isAnim)
       image(this.planetImage, this.pos.x, this.pos.y, this.rad * 2, this.rad * 2,
-        fn * this.pixelSize, 0, this.pixelSize, this.pixelSize )
+        this.frameIndex * this.pixelSize, 0, this.pixelSize, this.pixelSize )
     }
   }
 

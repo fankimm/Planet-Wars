@@ -17,6 +17,8 @@ var isGrown
 var isPost
 var isInput
 var isEnter
+var isCreatedInput
+var isIntroPlayed
 
 var spriteSheets
 var spriteIndex
@@ -35,6 +37,7 @@ var pwJson
 
 var UIInput
 
+
 function preload(){
   font = loadFont("assets/love.ttf")
   spriteSheets = loadImage("assets/spriteSheets.png")
@@ -43,29 +46,23 @@ function preload(){
 }
 function setup() {
 
-  for(var i =0; i < 10; i++){
-
-    console.log("name : " + pwJson.feed.entry[i].gsx$name.$t + ", " + "score : " + pwJson.feed.entry[i].gsx$score.$t)
-  }
-
-
   var dd = displayDensity()
   pixelDensity(1)
   dw = displayWidth - 100
   dh = displayHeight - 100
   if(dw > dh){
     createCanvas(dh / 1.7, dh)
-  } else createCanvas(displayWidth * dd-100*dd, displayHeight * dd-100*dd)
+  } else createCanvas(windowWidth windowHeight)
 
   imageMode(CENTER)
   textFont(font)
-
-
+  textAlign(LEFT,CENTER)
+  background(30)
   score = 0
   name = ''
   lastFrameCount = 0
+  // UIInput = new UI(width / 2, height / 2, 120, 20)
 
-  UIInput = new UI(width / 2, height / 2, 120, 20)
   player = new Planet(width - 100, height - 100, 0, 0, 2, 0, false, 4)
   enemy = new Planet(100, 100, 1, 1, 1, 1, false)
   sun = new Planet(random(100, width - 100), random(100, height - 100), 0, 0, 0, 2, false)
@@ -79,6 +76,8 @@ function setup() {
   isPost = false
   isInput = false
   isEnter = false
+  isCreatedInput = false
+  isIntroPlayed = false
 
   spriteIndex = 0
   // player.spriteAnimation(10)
@@ -89,8 +88,6 @@ function setup() {
   fill(255)
   textSize(64)
 
-
-
 }
 
 function draw() {
@@ -98,9 +95,11 @@ function draw() {
   currentTime = millis()
   var dt = (currentTime - lastTime)/ 10
   // console.log(dt)
+  push()
+  if(!isIntroPlayed) intro()
+  pop()
 
-
-  if(!isGameOver){
+  if(!isGameOver && isIntroPlayed){
     background(30)
 
     // player.pos.add(player.vel)
@@ -131,6 +130,13 @@ function draw() {
     enemyGrow()
     itemDraw()
   }
+  if(isGameOver && !isCreatedInput){
+    isCreatedInput = true
+    var myInput = createInput('')
+    myInput.position(width / 2 - myInput.size().width / 2, height / 2)
+
+    myInput.input(myInputEvent)
+  }
   if(isGameOver & !isPost){
     if(isInput){
       isPost = true
@@ -139,16 +145,24 @@ function draw() {
     }
   }
 
-  text(score, 10, 50)
-  if(isGameOver) UIInput.draw()
+  text(score, 30, 50)
 
+
+}
+function intro(){
+  for(var i =0; i < 10; i++){
+
+    var introText = i + 1 + " : " + pwJson.feed.entry[i].gsx$name.$t + " " + pwJson.feed.entry[i].gsx$score.$t
+
+    fill(255)
+    textSize(32)
+    text(introText, width / 4, i*32 + height / 5)
+  }
 
 }
 
 function myInputEvent(){
-
-    name = this.value()
-
+  name = this.value()
 }
 
 function gameOver(){
@@ -174,6 +188,7 @@ function enemyGrow(){
   if(!isGrown && score % 4 == 3){
     isGrown = true
     enemy.rad += 10
+    enemy.speed += 0.5
   }
 }
 
@@ -217,7 +232,7 @@ function getSun(){
     sun.pos.x = random(100, width - 100)
     sun.pos.y = random(100, height - 100)
     score++
-    player.speed += 0.7
+    player.speed += 0.3
   }
 }
 
@@ -253,15 +268,21 @@ function edgeCheck(planet){
 function keyPressed(){
 
   // UIInput.draw(keyCode)
-  if(UIInput.charIndex > 1 && keyCode == 13){
-    // name = UIInput.char
-    for(var i = 0; i<UIInput.char.length; i++){
-      name += UIInput.char[i]
-    }
-    isInput = true
-  }
-  if(isGameOver) UIInput.charArray(key, keyCode)
+  // if(UIInput.charIndex > 1 && keyCode == 13){
+  //   // name = UIInput.char
+  //   for(var i = 0; i<UIInput.char.length; i++){
+  //     name += UIInput.char[i]
+  //   }
+  //   isInput = true
+  // }
+  // if(isGameOver) UIInput.charArray(key, keyCode)
+  if(keyCode == 13 && isGameOver){
 
+    console.log(name)
+    isInput = true
+    removeElements()
+
+  }
   if(keyCode == 49) itemUse()
 }
 
@@ -274,6 +295,7 @@ function touchStarted(){
 }
 
 function mouseClicked(){
+  isIntroPlayed = true
   if(dw > dh){
     playerMove(player)
   }
