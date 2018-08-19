@@ -24,18 +24,31 @@ var spriteIndex
 var currentTime
 var lastTime
 var deltaTime
-var inp
+
 
 var lastFrameCount
 
 var font
 
+var jsonUrl
+var pwJson
+
+var UIInput
+
 function preload(){
   font = loadFont("assets/love.ttf")
   spriteSheets = loadImage("assets/spriteSheets.png")
+  jsonUrl = 'https://spreadsheets.google.com/feeds/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/od6/public/values?alt=json'
+  pwJson = loadJSON(jsonUrl)
 }
 function setup() {
-  inp = createInput('')
+
+  for(var i =0; i < 10; i++){
+
+    console.log("name : " + pwJson.feed.entry[i].gsx$name.$t + ", " + "score : " + pwJson.feed.entry[i].gsx$score.$t)
+  }
+
+
   var dd = displayDensity()
   pixelDensity(1)
   dw = displayWidth - 100
@@ -47,10 +60,12 @@ function setup() {
   imageMode(CENTER)
   textFont(font)
 
+
   score = 0
   name = ''
   lastFrameCount = 0
 
+  UIInput = new UI(width / 2, height / 2, 120, 20)
   player = new Planet(width - 100, height - 100, 0, 0, 2, 0, false, 4)
   enemy = new Planet(100, 100, 1, 1, 1, 1, false)
   sun = new Planet(random(100, width - 100), random(100, height - 100), 0, 0, 0, 2, false)
@@ -73,6 +88,7 @@ function setup() {
   deltaTime = 0
   fill(255)
   textSize(64)
+
 
 
 }
@@ -116,10 +132,6 @@ function draw() {
     itemDraw()
   }
   if(isGameOver & !isPost){
-
-    inp.input(myInputEvent)
-
-
     if(isInput){
       isPost = true
       var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=' + name + '&score=' + score;
@@ -128,11 +140,12 @@ function draw() {
   }
 
   text(score, 10, 50)
+  if(isGameOver) UIInput.draw()
 
 }
 
 function myInputEvent(){
-   console.log('you are typing: ', this.value());
+
     name = this.value()
 
 }
@@ -237,10 +250,16 @@ function edgeCheck(planet){
   }
 }
 function keyPressed(){
-  // console.log(keyCode)
-  if(isGameOver && !isPost){
-    if(keyCode == 13) isInput = true
+
+  // UIInput.draw(keyCode)
+  if(UIInput.charIndex > 1 && keyCode == 13){
+    // name = UIInput.char
+    for(var i = 0; i<UIInput.char.length; i++){
+      name += UIInput.char[i]
+    }
+    isInput = true
   }
+  if(isGameOver) UIInput.charArray(key, keyCode)
 
   if(keyCode == 49) itemUse()
 }
