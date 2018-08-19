@@ -19,6 +19,7 @@ var isInput
 var isEnter
 var isCreatedInput
 var isIntroPlayed
+var isMobile
 
 var spriteSheets
 var spriteIndex
@@ -51,8 +52,8 @@ function setup() {
   dw = displayWidth - 100
   dh = displayHeight - 100
   if(dw > dh){
-    createCanvas(dh / 1.7, dh)
-  } else createCanvas(windowWidth, windowHeight)
+    createCanvas(640, 640)
+  } else isMobile = true
 
   imageMode(CENTER)
   textFont(font)
@@ -91,6 +92,7 @@ function setup() {
 }
 
 function draw() {
+  if(!isMobile){
   lastTime = currentTime
   currentTime = millis()
   var dt = (currentTime - lastTime)/ 10
@@ -147,7 +149,7 @@ function draw() {
 
   text(score, 30, 50)
 
-
+}
 }
 function intro(){
   for(var i =0; i < 10; i++){
@@ -292,7 +294,6 @@ function touchMoved(){
 }
 function touchStarted(){
   playerMove(player)
-    isIntroPlayed = true
 }
 
 function mouseClicked(){
