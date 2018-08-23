@@ -9,6 +9,10 @@ var score
 var dw
 var dh
 
+var bgm
+var eatSound
+var gameOverSound
+
 var isItemGen
 var isItemGet
 var isItemUse
@@ -40,13 +44,19 @@ var UIInput
 
 
 function preload(){
+  bgm = loadSound("assets/bgm.mp3")
+  eatSound = loadSound("assets/eat.mp3")
+  gameOverSound = loadSound("assets/gameoverBgm.mp3")
   font = loadFont("assets/love.ttf")
   spriteSheets = loadImage("assets/spriteSheets.png")
   jsonUrl = 'https://spreadsheets.google.com/feeds/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/od6/public/values?alt=json'
   pwJson = loadJSON(jsonUrl)
 }
 function setup() {
-
+  bgm.playMode('restart')
+  eatSound.playMode('restart')
+  gameOverSound.playMode('restart')
+  bgm.play()
   var dd = displayDensity()
   pixelDensity(1)
   dw = displayWidth - 100
@@ -132,6 +142,10 @@ function draw() {
     enemyGrow()
     itemDraw()
   }
+  if(isGameOver){
+    bgm.stop()
+    gameOverSound.play()
+  }
   if(isGameOver && !isCreatedInput){
     isCreatedInput = true
     var myInput = createInput('')
@@ -205,6 +219,7 @@ function itemUse(){
 }
 
 function itemGen(){
+
   if(!isItemGen && frameCount % 180 == 0){
     isItemGen = true
     item.pos.x = random(100, width - 100)
@@ -214,6 +229,7 @@ function itemGen(){
 
 function getItem(){
   if(isItemGen && collisionCheck(item, player)){
+    eatSound.play()
     isItemGet = true
     score++
     item.pos.x = -100
@@ -231,6 +247,7 @@ function itemDraw(){
 
 function getSun(){
   if(collisionCheck(sun, player)){
+    eatSound.play()
     sun.pos.x = random(100, width - 100)
     sun.pos.y = random(100, height - 100)
     score++
