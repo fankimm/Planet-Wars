@@ -62,6 +62,7 @@ function setup() {
   dw = displayWidth - 100
   dh = displayHeight - 100
 isMobile = false
+isInput = true
 /*
   if(dw > dh){
     createCanvas(640, 640)
