@@ -312,13 +312,19 @@ function keyPressed(){
 }
 
 
+function touchEnded(){
 
-function mouseClicked(){
-  isIntroPlayed = true
-/*
+isIntroPlayed = true
+
   if(dw > dh){
     playerMove(player)
-  }*/
+  }
 
-playerMove(player)
+}
+function mouseClicked(){
+  isIntroPlayed = true
+
+  if(dw > dh){
+    playerMove(player)
+  }
 }
