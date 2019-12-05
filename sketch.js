@@ -312,7 +312,7 @@ function keyPressed(){
 }
 
 
-function touchEnded(){
+function touchStarted(){
 
 isIntroPlayed = true
 
