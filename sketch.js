@@ -315,7 +315,10 @@ function keyPressed(){
 
 function mouseClicked(){
   isIntroPlayed = true
+/*
   if(dw > dh){
     playerMove(player)
-  }
+  }*/
+
+playerMove(player)
 }
