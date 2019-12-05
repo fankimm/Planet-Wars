@@ -61,9 +61,13 @@ function setup() {
   pixelDensity(1)
   dw = displayWidth - 100
   dh = displayHeight - 100
+/*
   if(dw > dh){
     createCanvas(640, 640)
   } else isMobile = true
+*/
+
+createCanvas (640,640)
 
   imageMode(CENTER)
   textFont(font)
