@@ -61,6 +61,7 @@ function setup() {
   pixelDensity(1)
   dw = displayWidth - 100
   dh = displayHeight - 100
+isMobile = false
 /*
   if(dw > dh){
     createCanvas(640, 640)
