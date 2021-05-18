@@ -2,6 +2,7 @@ var player
 var enemy
 var sun
 var item
+var bg
 
 var name
 var score
@@ -44,6 +45,7 @@ var UIInput
 
 
 function preload(){
+  bg = load("assets/bg.png")
   bgm = loadSound("assets/bgm.mp3")
   eatSound = loadSound("assets/eat.mp3")
   gameOverSound = loadSound("assets/gameoverBgm.mp3")
@@ -134,6 +136,7 @@ function draw() {
 
     player.update(dt)
     enemy.update(dt)
+    image(bg,0,0)
     enemy.draw()
     sun.draw()
     item.draw()
