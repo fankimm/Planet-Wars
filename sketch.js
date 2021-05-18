@@ -45,7 +45,7 @@ var UIInput
 
 
 function preload(){
-  bg = load("assets/bg.png")
+  bg = loadImage("assets/bg.png")
   bgm = loadSound("assets/bgm.mp3")
   eatSound = loadSound("assets/eat.mp3")
   gameOverSound = loadSound("assets/gameoverBgm.mp3")
