@@ -120,7 +120,7 @@ function draw() {
   pop()
 
   if(!isGameOver && isIntroPlayed){
-    background(30)
+    image(bg,0,0)
 
     // player.pos.add(player.vel)
     if(isItemUse) {
@@ -136,7 +136,7 @@ function draw() {
 
     player.update(dt)
     enemy.update(dt)
-    image(bg,0,0)
+
     enemy.draw()
     sun.draw()
     item.draw()
