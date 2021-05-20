@@ -121,6 +121,7 @@ function draw() {
 
   if(!isGameOver && isIntroPlayed){
     //image(bg,0,0)
+    background(0)
 
     // player.pos.add(player.vel)
     if(isItemUse) {
