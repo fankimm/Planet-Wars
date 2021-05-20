@@ -45,7 +45,7 @@ var UIInput
 
 
 function preload(){
-  bg = loadImage("assets/bg.png")
+  //bg = loadImage("assets/bg.png")
   bgm = loadSound("assets/bgm.mp3")
   eatSound = loadSound("assets/eat.mp3")
   gameOverSound = loadSound("assets/gameoverBgm.mp3")
@@ -120,7 +120,7 @@ function draw() {
   pop()
 
   if(!isGameOver && isIntroPlayed){
-    image(bg,0,0)
+    //image(bg,0,0)
 
     // player.pos.add(player.vel)
     if(isItemUse) {
