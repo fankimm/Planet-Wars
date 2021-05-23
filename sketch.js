@@ -51,8 +51,8 @@ function preload(){
   gameOverSound = loadSound("assets/gameoverBgm.mp3")
   font = loadFont("assets/love.ttf")
   spriteSheets = loadImage("assets/spriteSheets.png")
-  //jsonUrl = 'https://spreadsheets.google.com/feeds/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/od6/public/values?alt=json'
-  jsonUrl = 'https://spreadsheets.google.com/feed/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/1/public/full?alt=json'
+  jsonUrl = 'https://spreadsheets.google.com/feeds/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/od6/public/values?alt=json'
+  //jsonUrl = 'https://spreadsheets.google.com/feed/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/1/public/full?alt=json'
 
   pwJson = loadJSON(jsonUrl)
 }
@@ -170,7 +170,8 @@ function draw() {
       isPost = true
       //var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=' + name + '&score=' + score;
       //var url = 'https://script.google.com/macros/s/AKfycbx5lMDR_IV52KO5fNyms97c3fnqyNtDzLkZV4LSo5pR6P-W37vKZ-tMWLmnuJ2PZdlytA/exec'+'?name=' + name + '&score=' + score;
-      var url = 'https://script.google.com/macros/s/AKfycbyLfhS3BjWv8iO9nPN6IfvmN-NaFEXY1Nz_D42FASLM6ek-jBsiZZIunrcnpnF5Qj0HOw/exec'+'?name=' + name + '&score=' + score;
+      var url = 'https://script.google.com/macros/s/AKfycbyLfhS3BjWv8iO9nPN6IfvmN-NaFEXY1Nz_D42FASLM6ek-jBsiZZIunrcnpnF5Qj0HOw/dev'+'?name=' + name + '&score=' + score;
+
       httpDo(url)
     }
   }
