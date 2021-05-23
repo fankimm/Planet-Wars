@@ -2,7 +2,6 @@ var player
 var enemy
 var sun
 var item
-var bg
 
 var name
 var score
@@ -45,15 +44,12 @@ var UIInput
 
 
 function preload(){
-  //bg = loadImage("assets/bg.png")
   bgm = loadSound("assets/bgm.mp3")
   eatSound = loadSound("assets/eat.mp3")
   gameOverSound = loadSound("assets/gameoverBgm.mp3")
   font = loadFont("assets/love.ttf")
   spriteSheets = loadImage("assets/spriteSheets.png")
   jsonUrl = 'https://spreadsheets.google.com/feeds/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/od6/public/values?alt=json'
-  //jsonUrl = 'https://spreadsheets.google.com/feed/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/1/public/full?alt=json'
-
   pwJson = loadJSON(jsonUrl)
 }
 function setup() {
@@ -122,8 +118,7 @@ function draw() {
   pop()
 
   if(!isGameOver && isIntroPlayed){
-    //image(bg,0,0)
-    background(0)
+    background(30)
 
     // player.pos.add(player.vel)
     if(isItemUse) {
@@ -139,7 +134,6 @@ function draw() {
 
     player.update(dt)
     enemy.update(dt)
-
     enemy.draw()
     sun.draw()
     item.draw()
@@ -168,10 +162,7 @@ function draw() {
   if(isGameOver & !isPost){
     if(isInput){
       isPost = true
-      //var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=' + name + '&score=' + score;
-      //var url = 'https://script.google.com/macros/s/AKfycbx5lMDR_IV52KO5fNyms97c3fnqyNtDzLkZV4LSo5pR6P-W37vKZ-tMWLmnuJ2PZdlytA/exec'+'?name=' + name + '&score=' + score;
-      var url = 'https://script.google.com/macros/s/AKfycbyLfhS3BjWv8iO9nPN6IfvmN-NaFEXY1Nz_D42FASLM6ek-jBsiZZIunrcnpnF5Qj0HOw/exec'+'?name=' + name + '&score=' + score;
-
+      var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=' + name + '&score=' + score;
       httpDo(url)
     }
   }
