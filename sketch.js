@@ -166,7 +166,8 @@ function draw() {
   if(isGameOver & !isPost){
     if(isInput){
       isPost = true
-      var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=' + name + '&score=' + score;
+      //var url = 'https://script.google.com/macros/s/AKfycby0VLtnKlOsKmHFA-eiwptlgdW75PyY7ad7sTL4_wP9/dev' + '?name=' + name + '&score=' + score;
+      var url = 'https://script.google.com/macros/s/AKfycbx5lMDR_IV52KO5fNyms97c3fnqyNtDzLkZV4LSo5pR6P-W37vKZ-tMWLmnuJ2PZdlytA/exec' '?name=' + name + '&score=' + score;
       httpDo(url)
     }
   }
