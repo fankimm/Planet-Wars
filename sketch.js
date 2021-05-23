@@ -52,7 +52,8 @@ function preload(){
   font = loadFont("assets/love.ttf")
   spriteSheets = loadImage("assets/spriteSheets.png")
   //jsonUrl = 'https://spreadsheets.google.com/feeds/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/od6/public/values?alt=json'
-  jsonUrl = 'https://spreadsheets.google.com/feed/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc//1/public/full?alt=json'
+  jsonUrl = 'https://spreadsheets.google.com/feed/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/1/public/full?alt=json'
+
   pwJson = loadJSON(jsonUrl)
 }
 function setup() {
