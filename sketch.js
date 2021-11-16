@@ -40,17 +40,30 @@ var jsonUrl;
 var pwJson;
 
 var UIInput;
+let rankData;
+// 1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc
+
+// fetch(`/v4/spreadsheets/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/values/A16`,{},'GET')
 
 function preload() {
+  rankData = [];
+  const apiKey = "AIzaSyCbtWrZzq1geadQ0b7eJOX-Sp8-z6OIrNk";
+  const spreadSheetId = "1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc";
+  fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadSheetId}/values/시트1!a2:b11?key=${apiKey}`,
+    {
+      method: "GET",
+    }
+  )
+    .then((r) => r.json())
+    .then((data) => {
+      rankData = data.values.map((item) => item);
+    });
   bgm = loadSound("assets/bgm.mp3");
   eatSound = loadSound("assets/eat.mp3");
   gameOverSound = loadSound("assets/gameoverBgm.mp3");
   font = loadFont("assets/love.ttf");
   spriteSheets = loadImage("assets/spriteSheets.png");
-  // jsonUrl =
-  //   "https://spreadsheets.google.com/feeds/list/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/od6/public/values?alt=json";
-  jsonUrl = "score.json";
-  pwJson = loadJSON(jsonUrl);
 }
 function setup() {
   bgm.playMode("restart");
@@ -187,19 +200,25 @@ function draw() {
   }
 }
 function intro() {
-  for (var i = 0; i < 10; i++) {
-    var introText =
-      i +
-      1 +
-      " : " +
-      pwJson.feed.entry[i].gsx$name.$t +
-      " " +
-      pwJson.feed.entry[i].gsx$score.$t;
-
+  rankData.forEach((f, idx) => {
+    const temp = `${f[0]} : ${f[1]}`;
     fill(255);
     textSize(32);
-    text(introText, width / 4, i * 32 + height / 5);
-  }
+    text(temp, width / 4, idx * 32 + height / 5);
+  });
+  // console.log(rankData);
+  // for (var i = 0; i < 10; i++) {
+  //   var introText =
+  //     i +
+  //     1 +
+  //     " : " +
+  //     pwJson.feed.entry[i].gsx$name.$t +
+  //     " " +
+  //     pwJson.feed.entry[i].gsx$score.$t;
+  //   fill(255);
+  //   textSize(32);
+  //   text(introText, width / 4, i * 32 + height / 5);
+  // }
 }
 
 function myInputEvent() {
