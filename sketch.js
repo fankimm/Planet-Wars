@@ -41,9 +41,8 @@ var pwJson;
 
 var UIInput;
 let rankData;
-// 1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc
 
-// fetch(`/v4/spreadsheets/1ez-PCsSvKQ2-7e9WvKGa6DSbhr6PbT16yxi5Xj4cAlc/values/A16`,{},'GET')
+const tes123t = 0;
 
 function preload() {
   rankData = [];
@@ -66,9 +65,9 @@ function preload() {
   spriteSheets = loadImage("assets/spriteSheets.png");
 }
 function setup() {
-  bgm.playMode("restart");
-  eatSound.playMode("restart");
-  gameOverSound.playMode("restart");
+  // bgm.playMode("restart");
+  // eatSound.playMode("restart");
+  // gameOverSound.playMode("restart");
   bgm.play();
   var dd = displayDensity();
   pixelDensity(1);
@@ -89,7 +88,6 @@ function setup() {
   textAlign(LEFT, CENTER);
   background(30);
   score = 0;
-  name = "";
   lastFrameCount = 0;
   // UIInput = new UI(width / 2, height / 2, 120, 20)
 
@@ -132,15 +130,12 @@ function draw() {
     lastTime = currentTime;
     currentTime = millis();
     var dt = (currentTime - lastTime) / 10;
-    // console.log(dt)
     push();
     if (!isIntroPlayed) intro();
     pop();
 
     if (!isGameOver && isIntroPlayed) {
       background(30);
-
-      // player.pos.add(player.vel)
       if (isItemUse) {
         player.spriteAnimation(10);
 
@@ -174,7 +169,7 @@ function draw() {
     }
     if (isGameOver) {
       bgm.stop();
-      gameOverSound.play();
+      if (!gameOverSound.isPlaying()) gameOverSound.play();
     }
     if (isGameOver && !isCreatedInput) {
       isCreatedInput = true;
@@ -206,19 +201,6 @@ function intro() {
     textSize(32);
     text(temp, width / 4, idx * 32 + height / 5);
   });
-  // console.log(rankData);
-  // for (var i = 0; i < 10; i++) {
-  //   var introText =
-  //     i +
-  //     1 +
-  //     " : " +
-  //     pwJson.feed.entry[i].gsx$name.$t +
-  //     " " +
-  //     pwJson.feed.entry[i].gsx$score.$t;
-  //   fill(255);
-  //   textSize(32);
-  //   text(introText, width / 4, i * 32 + height / 5);
-  // }
 }
 
 function myInputEvent() {
